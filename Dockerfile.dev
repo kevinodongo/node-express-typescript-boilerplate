@@ -1,0 +1,20 @@
+# install node
+FROM node:alpine 
+
+# enviroment development
+ENV NODE_ENV=development
+
+# create a work directory
+WORKDIR /node_backend
+
+# copy package json
+COPY package*json ./
+
+# install dependencies
+RUN yarn install 
+
+# copy all files
+COPY . . 
+
+# run the application
+CMD [ "yarn", "dev" ]

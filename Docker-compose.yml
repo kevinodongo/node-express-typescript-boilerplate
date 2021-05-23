@@ -1,0 +1,28 @@
+version: "3.8"
+services: 
+  redis-server:
+    container_name: redis-server
+    image: redis
+    restart: always
+  mongo-server:
+    container_name: mongo-server
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+  node_backend:
+    container_name: node_backend
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    depends_on:
+      - mongo-server
+    environment: 
+      - MONGO_DB_URI=mongodb://mongo-server/users
+      - REDIS_DB_URI=redis-server
+    ports: 
+      - 3000:3000
+    volumes:
+      - ./:/node_backend
+      - /node_backend/node_modules
